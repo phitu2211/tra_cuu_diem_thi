@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách ngành học trường Đại Học</title>
+</head>
+<style>
+    body {
+        max-width: 60%;
+        margin: 0 auto;
+    }
+
+    .content {
+        /* text-align: center; */
+    }
+
+    .universities {
+        text-align: left;
+    }
+</style>
+
+<body>
+    <div class="content">
+        <h1>Danh sách ngành học trường Đại Học</h1>
+
+        <label for="scoreInput">Nhập số điểm:</a>
+            <input type="number" id="scoreInput" />
+            <button onclick="filterData()">Tìm kiếm</button>
+
+            <div id="universities">
+
+            </div>
+    </div>
+
+    <script>
+        let universitiesData;
+
+        fetch('https://raw.githubusercontent.com/cantuananh/countriesData/main/universities.json')
+            .then(response => response.json())
+            .then(data => {
+                universitiesData = [...data];
+            })
+            .catch(error => {
+                console.error('Lỗi:', error);
+            });
+
+
+        function displayData(data) {
+            const universitiesContainer = document.getElementById('universities');
+            universitiesContainer.innerHTML = '';
+
+            data.forEach((university, index) => {
+                const universityElement = document.createElement('div');
+                const universityHeader = document.createElement('h3');
+                universityHeader.innerText = `${index + 1}. Trường: ${university.name} (${university.code})`;
+                universityElement.appendChild(universityHeader);
+
+                const branchList = document.createElement('ol');
+
+                university.benchmarks.forEach((branch, branchIndex) => {
+                    const branchItem = document.createElement('li');
+
+                    const branchName = document.createElement('span');
+                    branchName.innerText = `${branch.branch_name} (${branch.branch_code}) - `;
+                    branchItem.appendChild(branchName);
+
+                    const score = document.createElement('span');
+                    score.innerText = `Điểm: ${branch.score} - `;
+                    branchItem.appendChild(score);
+
+                    const groups = document.createElement('span');
+                    groups.innerText = `Tổ hợp: ${branch.groups.join(', ')}`;
+                    branchItem.appendChild(groups);
+
+                    branchList.appendChild(branchItem);
+                });
+
+                universityElement.appendChild(branchList);
+                universitiesContainer.appendChild(universityElement);
+            });
+        }
+
+        function filterData() {
+            const scoreInput = document.getElementById('scoreInput');
+            const filterScore = parseFloat(scoreInput.value);
+
+            if (isNaN(filterScore)) {
+                alert('Vui lòng nhập một số điểm hợp lệ!');
+                return;
+            }
+
+            let universitiesResult = [];
+                universitiesData.forEach(university => { 
+                    let benchmarkFind = university.benchmarks.filter(branch => branch.score <= filterScore);
+                    if (benchmarkFind.length > 0) {
+                        let universityHasBenchmarks = {...university, benchmarks: benchmarkFind};
+                        universitiesResult.push(universityHasBenchmarks);
+                    }
+                });
+
+            displayData(universitiesResult);
+        }
+    </script>
+</body>
+
+</html>
