@@ -9,8 +9,9 @@
 </head>
 <style>
     body {
-        max-width: 65%;
+        max-width: 60%;
         margin: 0 auto;
+        padding-left: 11rem;
     }
 </style>
 
@@ -18,9 +19,10 @@
     <div class="content">
         <h1>Danh sách ngành học trường Đại Học</h1>
         <label for="scoreInput">Mời nhập dữ liệu:</label>
-        <input type="number" id="scoreInput" placeholder="Nhập điểm thi..."/>
+        <input type="number" id="scoreInput" placeholder="Nhập điểm thi..." />
         <label for="groupInput"></label>
         <input type="text" id="groupInput" placeholder="Nhập khối thi..." />
+        <input type="text" id="nameInput" placeholder="Nhập tên ngành..." />
         <button onclick="filterData()">Tìm kiếm</button>
         <div id="universities"></div>
     </div>
@@ -77,18 +79,17 @@
             const groupInput = document.getElementById('groupInput');
             const filterScore = parseFloat(scoreInput.value);
             const filterGroup = groupInput.value.trim();
+            const nameInput = document.getElementById('nameInput');
+            const filterName = nameInput.value.trim().toLowerCase();
 
             let universitiesResult = [];
             universitiesData.forEach(university => {
                 let benchmarkFind = university.benchmarks.filter(branch => {
-                    if (filterScore && filterGroup) {
-                        return branch.score <= filterScore && branch.groups.includes(filterGroup);
-                    } else if (filterScore) {
-                        return branch.score <= filterScore;
-                    } else if (filterGroup) {
-                        return branch.groups.includes(filterGroup);
-                    }
-                    return true;
+                    let scoreCondition = !filterScore || branch.score <= filterScore;
+                    let groupCondition = !filterGroup || branch.groups.includes(filterGroup);
+                    let nameCondition = !filterName || branch.branch_name.toLowerCase().includes(filterName);
+
+                    return scoreCondition && groupCondition && nameCondition;
                 });
 
                 if (benchmarkFind.length > 0) {
