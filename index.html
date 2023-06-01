@@ -76,7 +76,7 @@
             const scoreInput = document.getElementById('scoreInput');
             const groupInput = document.getElementById('groupInput');
             const filterScore = parseFloat(scoreInput.value);
-            const filterGroup = groupInput.value.trim();
+            const filterGroup = groupInput.value.trim().toLowerCase();
             const nameInput = document.getElementById('nameInput');
             const filterName = nameInput.value.trim().toLowerCase();
 
@@ -84,7 +84,7 @@
             universitiesData.forEach(university => {
                 let benchmarkFind = university.benchmarks.filter(branch => {
                     let scoreCondition = !filterScore || branch.score <= filterScore;
-                    let groupCondition = !filterGroup || branch.groups.includes(filterGroup);
+                    let groupCondition = !filterGroup || branch.groups.some(group => group.toLowerCase() === filterGroup.toLowerCase());
                     let nameCondition = !filterName || branch.branch_name.toLowerCase().includes(filterName);
 
                     return scoreCondition && groupCondition && nameCondition;
