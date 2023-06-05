@@ -136,19 +136,15 @@
 
                 university.benchmarks.forEach((branch, branchIndex) => {
                     const branchItem = document.createElement('li');
-
                     const branchName = document.createElement('span');
                     branchName.innerText = `Chuyên ngành: ${branch.branch_name} (${branch.branch_code}) - `;
                     branchItem.appendChild(branchName);
-
                     const score = document.createElement('span');
                     score.innerText = `Điểm: ${branch.score} - `;
                     branchItem.appendChild(score);
-
                     const groups = document.createElement('span');
                     groups.innerText = `Tổ hợp: ${branch.groups.join(', ')}`;
                     branchItem.appendChild(groups);
-
                     branchList.appendChild(branchItem);
                 });
 
