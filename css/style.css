@@ -135,3 +135,10 @@
     text-decoration: none;
     color: white;
 }
+
+.error-message-style {
+    color: red;
+    display: none;
+    margin-top: -12px;
+    margin-bottom: -18px;
+}

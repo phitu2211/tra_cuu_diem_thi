@@ -11,15 +11,6 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>Danh sách ngành học trường Đại Học</title>
 </head>
-<style>
-    .error-message-style {
-        color: red;
-        display: none;
-        margin-top: -12px;
-        margin-bottom: -18px;
-    }
-</style>
-
 <body>
     <div class="title text-center pt-4">
         <h1><span style="color: red;" id="random-score"></span> điểm khối <span style="color: red;"
@@ -45,6 +36,7 @@
         <button class="mb-3 disabled btn btn-secondary width-input">BƯỚC 1/2</button>
         <br>
         <input class="mb-3 width-input round" id="nameInput" type="text" placeholder="Họ và tên">
+        <span id="message-error-name" class="error-message-style"></span>
         <br>
         <input class="mb-3 width-input" type="email" id="emailInput"
             placeholder="Email hay dùng để nhận báo cáo chi tiết">
@@ -67,11 +59,32 @@
 
         let errorInputEmail = document.getElementById("message-error-email");
         let errorInputPhone = document.getElementById("message-error-phone");
+        let errorInputName = document.getElementById("message-error-name");
 
         function submitData() {
             let nameInput = document.getElementById('nameInput').value;
             let emailInput = document.getElementById('emailInput').value;
             let phoneInput = document.getElementById('phoneNumberInput').value;
+            let acceptInput = document.getElementById('accept').checked;
+
+            if (nameInput.trim() === '') {
+                errorInputName.innerText = "Vui lòng nhập họ và tên!";
+                errorInputName.style.display = "block";
+                return;
+            }
+
+            if (emailInput.trim() === '') {
+                errorInputEmail.innerText = "Vui lòng nhập email!";
+                errorInputEmail.style.display = "block";
+                return;
+            }
+
+            if (phoneInput.trim() === '') {
+                errorInputPhone.innerText = "Vui lòng nhập số điện thoại!";
+                errorInputPhone.style.display = "block";
+                return;
+            }
+
 
             if (!validateEmail(emailInput)) {
                 errorInputEmail.innerText = "Vui lòng nhập email hợp lệ!";
@@ -132,4 +145,5 @@
         }    
     </script>
 </body>
+
 </html>
