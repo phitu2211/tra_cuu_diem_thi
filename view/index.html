@@ -27,7 +27,7 @@
             <p>Chúc các em chọn được trường phù hơn với năng lực và sở thích của bản thân!</p>
         </div>
         <div class="right">
-            <img alt="Hình ảnh" class="rounded-image" src="image/hangtathu.jpeg">
+            <img alt="Hình ảnh" class="rounded-image" src="/web_tra_cuu_diem_thi/image/hangtathu.jpeg">
         </div>
     </div>
     <div class="form-info text-center">
@@ -46,8 +46,7 @@
                 tư vấn chọn trường, và ngành với
                 Team AU</span>
             <br>
-            <button class="mb-3 btn btn-dark hover-button" onclick="submitData();"><a
-                    href="index_step2.html" class="next-step">BƯỚC TIẾP THEO</a></button>
+            <button class="mb-3 btn btn-dark hover-button" onclick="submitData();"><a class="next-step">BƯỚC TIẾP THEO</a></button>
     </div>
     <script>
         document.getElementById("today").innerHTML = getToday();
@@ -75,6 +74,8 @@
                 alert('Vui lòng nhập số điện thoại hợp lệ!');
                 return;
             }
+
+            window.location.href = "index_step2.html";
         }
 
         function validateEmail(email) {
