@@ -39,6 +39,7 @@
             <br>
             <input class="mb-3 width-input" type="email" id="emailInput"
                 placeholder="Email hay dùng để nhận báo cáo chi tiết">
+                <label style="color: red; display: block;" id="message-error-email"></label>
             <br>
             <input class="mb-3 width-input" type="text" id="phoneNumberInput" placeholder="Số điện thoại">
             <br>
@@ -54,26 +55,21 @@
         document.getElementById("random-block-execution").innerHTML = getRandomBlockExecusion();
 
         function submitData() {
-            const nameInput = document.getElementById('nameInputModal');
-            const emailInput = document.getElementById('emailInputModal');
-            const phoneInput = document.getElementById('phoneInputModal');
+            console.log(12312321);
+            let nameInput = document.getElementById('nameInput').value;
+            let emailInput = document.getElementById('emailInput').value;
+            let phoneInput = document.getElementById('phoneNumberInput').value;
 
-            const userData = {
-                name: nameInput.value.trim(),
-                email: emailInput.value.trim(),
-                phone: phoneInput.value.trim(),
-                date: new Date().toISOString()
-            };
-
-            if (!validateEmail(userData.email)) {
-                alert('Vui lòng nhập email hợp lệ!');
+            if (!validateEmail(emailInput)) {
+                document.getElementById("message-error-email").innerText = "Vui lòng nhập email hợp lệ!";
                 return;
             }
 
-            if (!validatePhoneNumber(userData.phone)) {
+            if (!validatePhoneNumber(phoneInput)) {
                 alert('Vui lòng nhập số điện thoại hợp lệ!');
                 return;
             }
+
 
             window.location.href = "index_step2.html";
         }
