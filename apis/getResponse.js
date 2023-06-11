@@ -33,7 +33,6 @@ async function createContact(data) {
 	});
 
 	const json = await res.json();
-	console.log(json);
 
 	if (res.status != 202) return null;
 
