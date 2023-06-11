@@ -2,14 +2,25 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const fs = require('fs');
-
+const session = require('express-session');
 require('dotenv').config();
 
 const { getResponse } = require('./apis');
+const e = require('express');
 
 app.use(express.static(__dirname + '/assets'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(
+	session({
+		secret: process.env.SESSION_SECRET || '',
+		saveUninitialized: false,
+		resave: false,
+		// cookie: {
+		// 	maxAge: 1000 * 60 * 100,
+		// },
+	})
+);
 
 const port = 3000;
 
@@ -20,21 +31,30 @@ app.get('/', (req, res) => {
 	res.sendFile(path.join(__dirname, '/pages/index.html'));
 });
 
+app.get('/step2', (req, res) => {
+	if (!req.session.email || !req.session.contactId) {
+		res.sendFile(path.join(__dirname, '/pages/index.html'));
+	} else {
+		res.sendFile(path.join(__dirname, '/pages/step2.html'));
+	}
+});
+
 app.post('/step2', async (req, res) => {
 	const { name, email, phone } = req.body;
 
-	const result = await getResponse.createContact({
+	if (!name || !email || !phone) {
+		return res.sendFile(path.join(__dirname, '/pages/index.html'));
+	}
+
+	await getResponse.createContact({
 		name,
 		email,
 		phone,
 	});
-	const contactId = await getResponse.getContactIdByEmail(email);
 
-	console.log(
-		await getResponse.createNewsLetter({
-			contacts: [contactId],
-		})
-	);
+	const contactId = await getResponse.getContactIdByEmail(email);
+	req.session.email = email;
+	req.session.contactId = contactId;
 
 	res.sendFile(path.join(__dirname, '/pages/step2.html'));
 });
@@ -94,7 +114,7 @@ app.get('/search', function (req, res, next) {
 				tableDataBody += `<tr>`;
 				tableDataBody += `<td>${branch['branch_name']}</td>`;
 				tableDataBody += `<td>${branch['score']}</td>`;
-				tableDataBody += `<td>${branch['groups']}</td>`;
+				tableDataBody += `<td>${branch['groups'].join('<br/>')}</td>`;
 				tableDataBody += `</tr>`;
 			}
 
@@ -109,6 +129,38 @@ app.get('/search', function (req, res, next) {
 });
 
 app.get('/step3', (req, res) => {
+	res.sendFile(path.join(__dirname, '/pages/index.html'));
+});
+
+app.post('/step3', async (req, res) => {
+	const { score, group, branchName } = req.body;
+
+	const email = req.session.email;
+	const contactId = req.session.contactId;
+
+	if (!email || !contactId)
+		return res.sendFile(path.join(__dirname, '/pages/index.html'));
+
+	if (!score) {
+		return res.sendFile(path.join(__dirname, '/pages/step2.html'));
+	}
+
+	await getResponse.updateContact(contactId, {
+		score,
+		group,
+		branchName,
+		email,
+	});
+
+	getResponse
+		.createNewsLetter({
+			contacts: [contactId],
+		})
+		.then((response) => {
+			req.session.destroy();
+		})
+		.catch((err) => console.error(err));
+
 	res.sendFile(path.join(__dirname, '/pages/step3.html'));
 });
 

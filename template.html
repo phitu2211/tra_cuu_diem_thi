@@ -1,1 +1,6 @@
-Hi {{CONTACT "subscriber_name"}} Check out new books that may interest you {{LINK "https://daihoc.codegym.vn" Website}}
+<h1>Thông tin các trường tìm kiếm được theo tiêu chí:</h1>
+- Điểm: {{CUSTOM `score`}}<br/>
+- Ngành: {{CUSTOM `branch_name` ""}}<br/>
+- Khối: {{CUSTOM `group` ""}}<br/>
+{{EXTERNAL "http://159.223.50.12/search?score={{CUSTOM `score`}}&group={{CUSTOM `group`}}&branchName={{CUSTOM `branch_name`}}&limit=5"}}
+<a href="{{LINK "http://159.223.50.12/search?score={{CUSTOM `score`}}&group={{CUSTOM `group`}}&branchName={{CUSTOM `branch_name`}}"}}">Xem đầy đủ thông tin</a>

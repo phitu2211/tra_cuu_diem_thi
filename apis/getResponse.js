@@ -8,7 +8,7 @@ const API_KEY = process.env.API_KEY || '';
 const CAMPAIGN_ID = process.env.CAMPAIGN_ID || 'Pq2a0';
 
 const template = fs.readFileSync(
-	path.resolve(__dirname, '../message_template_1686476082.html'),
+	path.resolve(__dirname, '../template.html'),
 	'utf8'
 );
 
@@ -24,6 +24,12 @@ async function createContact(data) {
 		},
 		email: data.email,
 		name: data.name,
+		customFieldValues: [
+			{
+				customFieldId: 'pUbkqH',
+				value: [data.phone],
+			},
+		],
 	};
 
 	const res = await fetch(CONTACT_ENDPOINT, {
@@ -54,15 +60,53 @@ async function getContactIdByEmail(email) {
 	return json.length > 0 ? json[0].contactId : null;
 }
 
+async function updateContact(id, data) {
+	const customFieldValues = [];
+
+	if (data.branchName)
+		customFieldValues.push({
+			customFieldId: 'p1p6Ab',
+			value: [data.branchName],
+		});
+
+	if (data.group)
+		customFieldValues.push({
+			customFieldId: 'p1p615',
+			value: [data.group],
+		});
+
+	if (data.score)
+		customFieldValues.push({
+			customFieldId: 'p1p6iq',
+			value: [data.score],
+		});
+
+	const body = {
+		email: data.email,
+		customFieldValues,
+	};
+
+	const res = await fetch(`${CONTACT_ENDPOINT}/${id}`, {
+		method: 'POST',
+		headers: customHeaders,
+		body: JSON.stringify(body),
+	});
+
+	const json = await res.json();
+
+	// if (res.status != 200) return null;
+
+	return json;
+}
+
 async function createNewsLetter(data) {
 	const body = {
 		content: {
 			html: template,
 		},
 		flags: ['openrate', 'clicktrack'],
-		// editor: 'getresponse',
-		name: 'Demo email',
-		subject: 'Marketing',
+		editor: 'getresponse',
+		subject: 'Thông tin tìm kiếm trường đại học',
 		fromField: {
 			fromFieldId: 'z96Nr',
 		},
@@ -92,9 +136,9 @@ async function createNewsLetter(data) {
 
 	return await res.json();
 }
-
 module.exports = {
 	createContact,
+	updateContact,
 	getContactIdByEmail,
 	createNewsLetter,
 };
