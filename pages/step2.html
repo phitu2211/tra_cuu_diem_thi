@@ -8,70 +8,48 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="/web_tra_cuu_diem_thi/css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
     <title>Danh sách ngành học trường Đại Học</title>
 </head>
-
-<style>
-    .content-marketing-1 {
-        background-color: rgba(195, 194, 194, 0.564);
-        width: 50%;
-        margin: 0 auto;
-    }
-
-    .content-marketing-4 {
-        width: 50%;
-        margin: 0 auto;
-    }
-</style>
-
 <body>
-    <div class="title text-center pb-3 pt-4" id="step2">
+    <div class="title text-center pt-4" id="step2">
         <h1><span style="color: red;" id="random-score"></span> điểm khối <span style="color: red;"
                 id="random-block-execution"></span> nên
             chọn trường nào, ngành nào?</h1>
         <h1>(Cập nhật mới nhất <span id="today"></span></script>)</h1>
     </div>
-    <div class="content-marketing text-center">
-        <div class="content-marketing-1 pt-4 pb-2">
-            <h5>Chúc mừng bạn đã sàng lọc thành công!</h5>
-            <div style="text-align:left; padding-left: 1rem;">
-                <p>Cô Hằng đã gửi thông tin danh chi tiết về danh sách các trường, và ngành theo điều kiện chọn lọc vào
-                    email bạn vừa đăng ký.</p>
-                <b>
-                    <p>Hãy vui lòng kiểm tra email cả họp thư span và quảng cáo!</p>
-                </b>
-            </div>
-
+    <div class="content">
+        <div class="left">
+            <p>Cô Hằng Tạ là chuyên gia tư vấn về học tập của các em học sinh. Là người có rất nhiều tầm ảnh hưởng của giới trẻ</p>
+            <p>Sau 15 năm thấy các em vất vả trong việc chọn trường học, ngành học. Cô và các cộng sự đã tạo nên 1 cái tool nho nhỏ này để giúp học sinh dễ dàng chọn trường hơn</p>
+            <p>Chúc các em chọn được trường phù hơn với năng lực và sở thích của bản thân!</p>
         </div>
-        <div class="content-marketing-2 pt-4">
-            <h2><a style="color: red;" href="">MỘT MÓN QUÀ ĐẶC BIỆT DÀNH TẶNG BẠN</a></h1>
-        </div>
-        <div class="content-marketing-3 pt-4">
-            <b>
-                <span>CƠ HỘI NHẬN HỌC BỔNG TRONG THÁNG 6/2023</span>
-                <br>
-                <span>THAM QUAN DOANH NGHIỆP CÔNG NGHỆ THÔNG TIN Ở SINGAPORE</span>
-                <br>
-                <span>HOẶC MACBOOK AIR (TRỊ GIÁ 25.000.000 Đ)</span>
-            </b>
-        </div>
-        <div class="content-marketing-4 pt-4" style="text-align: left;">
-            <span>Dành riêng cho học sinh lớp 12/ đã tốt nghiệp THPT,</span>
-            <br>
-            <ul>
-                <li>Bạn có muốn làm <b>sinh viên công nghệ thông tin</b> và được <b>thực tập tại công ty chỉ sau 18
-                        tháng</b> học
-                    với mức <b>lương 10 -15 triệu vnd/ tháng</b>?</li>
-                <li>Nhận <b>cam kết 100% sinh viên có việc làm</b> ngành công nghệ thông tin sau khi ra trường.</li>
-                <li>Được <b>hoàn trả 100% học phí</b> nếu sinh viên không có việc sau 60 ngày kể từ khi tốt nghiệp.</li>
-            </ul>
+        <div class="right">
+            <img alt="Hình ảnh" class="rounded-image" src="/image/hangtathu.jpeg">
         </div>
     </div>
-    <div class="text-center">
-        <button class="mb-3 btn btn-success" onclick="submitDataToGetResponse();">
-            <a href="https://daihoc.codegym.vn/chuong-trinh-dao-tao-ky-su-cong-nghe-thong-tin-codegym/" class="next-step">CLICK VÀ ĐĂNG KÝ TÌM HIỂU NGAY</a>
-        </button>
+    <div class="form-info text-center">
+        <h4>Tìm kiếm trường, ngành phù hợp với điểm thi</h4>
+        <h4>(Miễn phí)</h4>
+            <button class="mb-3 disabled btn btn-secondary width-input">BƯỚC 2/2</button>
+            <br>
+            <input class="mb-3 width-input round" id="nameInput" type="text" placeholder="Tổng điểm của bạn...">
+            <br>
+            <select class="width-input mb-3" style="height: 2rem;">
+                <option value="">Chọn khối thi</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+              </select>
+            <br>
+            <input class="mb-3 width-input" type="text" id="phoneNumberInput" placeholder="Nhập tên ngành...">
+            <br>
+            <input type="checkbox" class="mb-4" id="accept" style="margin-right: 8px; margin-left: 3.1rem;"><span>Nhận
+                tư vấn chọn trường, và ngành với
+                Team AU</span>
+            <br>
+            <button class="mb-3 btn btn-dark hover-button" onclick="submitDataToGetResponse();"><a class="next-step" href="/step3">TÌM KIẾM NGAY</a></button>
     </div>
     <script>
         document.getElementById("today").innerHTML = getToday();
