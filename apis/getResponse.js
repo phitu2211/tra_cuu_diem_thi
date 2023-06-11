@@ -24,12 +24,6 @@ async function createContact(data) {
 		},
 		email: data.email,
 		name: data.name,
-		customFieldValues: [
-			{
-				customFieldId: 'pUbkqH',
-				value: [data.phone],
-			},
-		],
 	};
 
 	const res = await fetch(CONTACT_ENDPOINT, {
