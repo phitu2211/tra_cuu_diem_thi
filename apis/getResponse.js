@@ -33,9 +33,6 @@ async function createContact(data) {
 	});
 
 	if (res.status != 202) return null;
-
-	const json = await res.json();
-	return json;
 }
 
 async function getContactIdByEmail(email) {
