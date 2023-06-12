@@ -32,10 +32,9 @@ async function createContact(data) {
 		body: JSON.stringify(body),
 	});
 
-	const json = await res.json();
-
 	if (res.status != 202) return null;
 
+	const json = await res.json();
 	return json;
 }
 
