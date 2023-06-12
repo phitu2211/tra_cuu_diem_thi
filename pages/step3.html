@@ -8,20 +8,48 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
     <title>Danh sách ngành học trường Đại Học</title>
 </head>
 
 <style>
     .content-marketing-1 {
         background-color: rgba(195, 194, 194, 0.564);
-        width: 50%;
+        width: 60%;
         margin: 0 auto;
     }
 
     .content-marketing-4 {
-        width: 50%;
+        width: 60%;
         margin: 0 auto;
+    }
+
+    @media (min-width: 360px) and (max-width: 767px) {
+
+        .content-marketing-1 {
+            background-color: rgba(195, 194, 194, 0.564);
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        .content-marketing-4 {
+            width: 90%;
+            margin: 0 auto;
+        }
+    }
+
+    @media (min-width: 768px) and (max-width: 1000px) {
+
+        .content-marketing-1 {
+            background-color: rgba(195, 194, 194, 0.564);
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        .content-marketing-4 {
+            width: 90%;
+            margin: 0 auto;
+        }
     }
 </style>
 
@@ -30,7 +58,7 @@
         <h1><span style="color: red;" id="random-score"></span> điểm khối <span style="color: red;"
                 id="random-block-execution"></span> nên
             chọn trường nào, ngành nào?</h1>
-        <h1>(Cập nhật mới nhất <span id="today"></span></script>)</h1>
+        <h1>(Cập nhật mới nhất ngày <span id="today"></span></script>)</h1>
     </div>
     <div class="content-marketing text-center">
         <div class="content-marketing-1 pt-4 pb-2">
@@ -69,76 +97,11 @@
         </div>
     </div>
     <div class="text-center">
-        <button class="mb-3 btn btn-success" onclick="submitDataToGetResponse();">
-            <a href="https://daihoc.codegym.vn/chuong-trinh-dao-tao-ky-su-cong-nghe-thong-tin-codegym/" class="next-step">CLICK VÀ ĐĂNG KÝ TÌM HIỂU NGAY</a>
+        <button class="mb-4 btn btn-success" onclick="submitDataToGetResponse();">
+            <a href="https://daihoc.codegym.vn/chuong-trinh-dao-tao-ky-su-cong-nghe-thong-tin-codegym/"
+                class="next-step">CLICK VÀ ĐĂNG KÝ TÌM HIỂU NGAY</a>
         </button>
     </div>
-    <script>
-        document.getElementById("today").innerHTML = getToday();
-        document.getElementById("random-score").innerHTML = getRandomScore();
-        document.getElementById("random-block-execution").innerHTML = getRandomBlockExecusion();
-
-        function getRandomBlockExecusion() {
-            var options = ["A", "B", "C", "D"];
-            var blockExecution = options[Math.floor(Math.random() * options.length)];
-
-            return blockExecution;
-        }
-
-        function getToday() {
-            const date = new Date();
-            var day = date.getDate();
-            var month = date.getMonth() + 1;
-            var year = date.getFullYear();
-
-            var formattedDay = day.toString().padStart(2, '0');
-            var formattedMonth = month.toString().padStart(2, '0');
-
-            let today = formattedDay + "-" + formattedMonth + "-" + year;
-
-            return today;
-        }
-
-        function getRandomScore() {
-            let randomNumber = Math.floor(Math.random() * (30 - 15 + 1)) + 15;
-
-            return randomNumber;
-        }
-
-
-
-    //     function submitDataToGetResponse() {
-    //         var email = document.getElementById('emailInput').value;
-    //         var name = document.getElementById('nameInput').value;
-    //         var phone = document.getElementById('phoneNumberInput').value;
-
-    //         var requestData = {
-    //             email: email,
-    //             name: name,
-    //             phone: phone
-    //         };
-
-    //         fetch('https://api.getresponse.com/v3/contacts', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //                 'X-Auth-Token': 'qcrqsymdbpigunk9zve925tndi75jp74'
-    //             },
-    //             body: JSON.stringify(requestData)
-    //         })
-    //             .then(function (response) {
-    //                 if (response.ok) {
-    //                     console.log('Gửi email thành công!');
-    //                 } else {
-    //                     console.log('Gửi email thất bại!');
-    //                 }
-    //             })
-    //             .catch(function (error) {
-    //                 console.error('Lỗi:', error);
-    //             });
-    //     }
-    // </script>
-
 </body>
-
+<script src="/assets/js/main.js"></script>
 </html>
