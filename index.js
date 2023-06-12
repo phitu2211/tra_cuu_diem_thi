@@ -80,7 +80,12 @@ app.get('/search', function (req, res, next) {
 			let benchmarkFind = university.benchmarks.filter((branch) => {
 				let check = branch.score <= score;
 
-				if (group) check = check && branch.groups.includes(group.toUpperCase());
+				if (group)
+					check =
+						check &&
+						branch.groups
+							.map((group) => group[0])
+							.includes(group.toUpperCase());
 
 				if (branchName)
 					check =

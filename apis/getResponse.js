@@ -131,6 +131,7 @@ async function createNewsLetter(data) {
 
 	return await res.json();
 }
+
 module.exports = {
 	createContact,
 	updateContact,
