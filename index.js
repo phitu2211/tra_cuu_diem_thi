@@ -1,12 +1,10 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const fs = require('fs');
 const session = require('express-session');
-require('dotenv').config();
-
+const { getTableHtml } = require('./untils.js');
 const { getResponse } = require('./apis');
-const e = require('express');
+require('dotenv').config();
 
 app.use(express.static(__dirname + '/assets'));
 app.use(express.json());
@@ -22,10 +20,7 @@ app.use(
 	})
 );
 
-const port = 3000;
-
-const raw = fs.readFileSync('./universities.json');
-const universities = JSON.parse(raw);
+const port = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
 	res.sendFile(path.join(__dirname, '/pages/index.html'));
@@ -61,76 +56,11 @@ app.post('/step2', async (req, res) => {
 
 app.get('/search', function (req, res, next) {
 	const { score, group, limit, branchName } = req.query;
+	let tableDataHTML = getTableHtml(score, group, branchName, limit);
+	res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
 
-	fs.readFile('./pages/table.html', 'utf-8', function (err, data) {
-		if (err) return next(err);
-
-		res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
-
-		let tableDataHead = '<tr>';
-		tableDataHead += `<th>Trường</th>`;
-		tableDataHead += `<th>Ngành</th>`;
-		tableDataHead += `<th>Điểm</th>`;
-		tableDataHead += `<th>Khối</th>`;
-		tableDataHead += '</tr>';
-
-		let universitiesResult = [];
-		for (let i = 0; i < universities.length; i++) {
-			const university = universities[i];
-			let benchmarkFind = university.benchmarks.filter((branch) => {
-				let check = branch.score <= score;
-
-				if (group)
-					check =
-						check &&
-						branch.groups
-							.map((group) => group[0])
-							.includes(group.toUpperCase());
-
-				if (branchName)
-					check =
-						check &&
-						branch.branch_name.toLowerCase().includes(branchName.toLowerCase());
-
-				return check;
-			});
-			if (benchmarkFind.length > 0) {
-				let universityHasBenchmarks = {
-					...university,
-					benchmarks: benchmarkFind,
-				};
-				universitiesResult.push(universityHasBenchmarks);
-			}
-		}
-
-		const loop =
-			universitiesResult.length > limit && limit
-				? limit
-				: universitiesResult.length;
-		let tableDataBody = '';
-		for (let i = 0; i < loop; i++) {
-			tableDataBody += '<tr>';
-			let university = universitiesResult[i];
-			tableDataBody += `<td rowspan="${university.benchmarks.length + 1}">${
-				university['name']
-			}</td>`;
-
-			for (const branch of university.benchmarks) {
-				tableDataBody += `<tr>`;
-				tableDataBody += `<td>${branch['branch_name']}</td>`;
-				tableDataBody += `<td>${branch['score']}</td>`;
-				tableDataBody += `<td>${branch['groups'].join('<br/>')}</td>`;
-				tableDataBody += `</tr>`;
-			}
-
-			tableDataBody += '</tr>';
-		}
-		let tableDataHTML = tableDataHead + tableDataBody;
-
-		data = data.replace('#{tableData}', tableDataHTML);
-		res.write(data);
-		res.end();
-	});
+	res.write(tableDataHTML);
+	res.end();
 });
 
 app.get('/step3', (req, res) => {
@@ -150,16 +80,19 @@ app.post('/step3', async (req, res) => {
 		return res.sendFile(path.join(__dirname, '/pages/step2.html'));
 	}
 
-	await getResponse.updateContact(contactId, {
-		score,
-		group,
-		branchName,
-		email,
-	});
+	// await getResponse.updateContact(contactId, {
+	// 	score,
+	// 	group,
+	// 	branchName,
+	// 	email,
+	// });
 
 	getResponse
 		.createNewsLetter({
 			contacts: [contactId],
+			score,
+			group,
+			branchName,
 		})
 		.then((response) => {
 			req.session.destroy();

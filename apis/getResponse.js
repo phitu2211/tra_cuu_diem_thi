@@ -1,16 +1,13 @@
 require('dotenv').config();
 const fetch = require('node-fetch');
-const fs = require('fs');
-const path = require('path');
-
-const { CONTACT_ENDPOINT, NEWSLETTER_ENDPOINT } = require('./endpoint.js');
+const { getTemplate } = require('../untils.js');
+const {
+	CONTACT_ENDPOINT,
+	NEWSLETTER_ENDPOINT,
+	CAMPAIGN_ENDPOINT,
+} = require('./endpoint.js');
 const API_KEY = process.env.API_KEY || '';
 const CAMPAIGN_ID = process.env.CAMPAIGN_ID || 'Pq2a0';
-
-const template = fs.readFileSync(
-	path.resolve(__dirname, '../template.html'),
-	'utf8'
-);
 
 const customHeaders = {
 	'Content-Type': 'application/json',
@@ -91,19 +88,45 @@ async function updateContact(id, data) {
 	return json;
 }
 
+async function getDetailCampaign() {
+	const params = new URLSearchParams({
+		fields: 'confirmation',
+	});
+
+	const res = await fetch(`${CAMPAIGN_ENDPOINT}/${CAMPAIGN_ID}?${params}`, {
+		method: 'GET',
+		headers: customHeaders,
+	});
+
+	if (res.status != 200) return null;
+
+	const json = await res.json();
+
+	const fromFieldId = json['confirmation']['fromField']['fromFieldId'];
+	const replyToId = json['confirmation']['replyTo']['fromFieldId'];
+
+	return {
+		fromFieldId,
+		replyToId,
+	};
+}
+
 async function createNewsLetter(data) {
+	const template = getTemplate(data);
+	const { fromFieldId, replyToId } = await getDetailCampaign();
+
 	const body = {
 		content: {
 			html: template,
 		},
 		flags: ['openrate', 'clicktrack'],
 		editor: 'getresponse',
-		subject: 'Thông tin tìm kiếm trường đại học',
+		subject: process.env.TITLE_EMAIL || 'Thông tin tìm kiếm trường đại học',
 		fromField: {
-			fromFieldId: 'z96Nr',
+			fromFieldId: fromFieldId,
 		},
 		replyTo: {
-			fromFieldId: 'z96Nr',
+			fromFieldId: replyToId,
 		},
 		campaign: {
 			campaignId: CAMPAIGN_ID,
@@ -126,7 +149,9 @@ async function createNewsLetter(data) {
 
 	// if (res.status != 201) return null;
 
-	return await res.json();
+	const json = await res.json();
+
+	return json;
 }
 
 module.exports = {
