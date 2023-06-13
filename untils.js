@@ -28,15 +28,10 @@ function getTemplate(data) {
 		branchName,
 	});
 
-	if (table) {
-		let href = `${BASE_URL.replace(/\/$/, '')}/search?${params}`;
-		let urlFull = `<a href="${href}">Xem đầy đủ thông tin các trường tại đây</a>`;
-		table += urlFull;
-	} else {
-		table = '<p>Không tìm thấy trường nào theo tiêu chí tìm kiếm</p>';
-	}
+	let href = `${BASE_URL.replace(/\/$/, '')}/search?${params}`;
+	let urlFull = `<a href="${href}">Xem đầy đủ thông tin các trường tại đây</a>`;
 
-	let dataHtml = head + table;
+	let dataHtml = head + table + urlFull;
 
 	template = template.replace('#{data}', dataHtml);
 
@@ -49,12 +44,29 @@ function getTableHtml(score, group, branchName, limit = 5) {
 
 	let tableData = '<table border="1" style="border-collapse: collapse"><tr>';
 	tableData += `<th>Trường</th>`;
+	tableData += `<th style="padding: 0 20px">Mã trường</th>`;
 	tableData += `<th>Ngành</th>`;
+	tableData += `<th>Mã ngành</th>`;
 	tableData += `<th style="padding: 0 20px">Điểm</th>`;
 	tableData += `<th style="padding: 0 20px">Khối</th>`;
 	tableData += '</tr>';
 
-	let universitiesResult = [];
+	let universitiesResult = [
+		{
+			name: 'Trường Đại học Thành Đô',
+			code: 'TDD',
+			benchmarks: [
+				{
+					id: 1,
+					branch_name: 'Công nghệ thông tin - CodeGym',
+					branch_code: '7480201',
+					score: 15,
+					groups: ['A00', 'A01', 'B00', 'D01'],
+				},
+			],
+		},
+	];
+
 	for (let i = 0; i < universities.length; i++) {
 		const university = universities[i];
 		let benchmarkFind = university.benchmarks.filter((branch) => {
@@ -81,8 +93,6 @@ function getTableHtml(score, group, branchName, limit = 5) {
 		}
 	}
 
-	if (universitiesResult.length == 0) return '';
-
 	const loop =
 		universitiesResult.length > limit && limit
 			? limit
@@ -94,10 +104,14 @@ function getTableHtml(score, group, branchName, limit = 5) {
 		tableData += `<td style="padding: 4px" rowspan="${
 			university.benchmarks.length + 1
 		}">${university['name']}</td>`;
+		tableData += `<td style="padding: 4px; text-align: center" rowspan="${
+			university.benchmarks.length + 1
+		}">${university['code']}</td>`;
 
 		for (const branch of university.benchmarks) {
 			tableData += `<tr>`;
 			tableData += `<td style="padding: 4px">${branch['branch_name']}</td>`;
+			tableData += `<td style="padding: 4px">${branch['branch_code']}</td>`;
 			tableData += `<td style="text-align:center">${branch['score']}</td>`;
 			tableData += `<td style="text-align:center">${branch['groups'].join(
 				'<br/>'
