@@ -1,7 +1,6 @@
 document.getElementById('today').innerHTML = getToday();
 document.getElementById('random-score').innerHTML = getRandomScore();
-document.getElementById('random-block-execution').innerHTML =
-	getRandomBlockExecusion();
+document.getElementById('random-block-execution').innerHTML = getRandomBlockExecusion();
 
 let errorInputEmail = document.getElementById('message-error-email');
 let errorInputPhone = document.getElementById('message-error-phone');
@@ -102,25 +101,24 @@ function animateElement(elementId, animationClass) {
 	$('#' + elementId).addClass(animationClass);
 }
 
-$(function() {
+$(function () {
 	animateElement('random-score', 'zoom-in-out');
 	animateElement('random-block-execution', 'blink');
 	setInterval(changeValues, 3000);
-  });
-  
-  function changeValues() {
+});
+
+function changeValues() {
 	document.getElementById('random-score').innerHTML = getRandomScore();
 	document.getElementById('random-block-execution').innerHTML = getRandomBlockExecusion();
-  }
-  
-  function getRandomBlockExecusion() {
+}
+
+function getRandomBlockExecusion() {
 	var options = ['A', 'B', 'C', 'D'];
 	var blockExecution = options[Math.floor(Math.random() * options.length)];
 	return blockExecution;
-  }
-  
-  function getRandomScore() {
+}
+
+function getRandomScore() {
 	let randomNumber = Math.floor(Math.random() * (22 - 12 + 1)) + 12;
 	return randomNumber;
-  }
-  
+}
