@@ -114,4 +114,5 @@ function getTableHtml(score, group, branchName, limit = 5) {
 
 module.exports = {
 	getTemplate,
+	getTableHtml,
 };
