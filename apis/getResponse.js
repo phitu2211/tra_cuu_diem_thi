@@ -28,7 +28,7 @@ async function createContact(data) {
 			},
 		],
 	};
-	console.log(body.customFieldValues);
+	console.log(body);
 
 	const res = await fetch(CONTACT_ENDPOINT, {
 		method: 'POST',
