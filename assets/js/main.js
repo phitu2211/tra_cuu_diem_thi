@@ -13,37 +13,49 @@ const randomScore1 = document.getElementById('random-score-1');
 const randomScore2 = document.getElementById('random-score-2');
 const randomScore3 = document.getElementById('random-score-3');
 
+let currentIndex = 0;
+let scoreValues = [[12, 13, 14], [15, 16, 17], [18, 19, 20], [21, 22, 23]];
+
+function changeScores() {
+	randomScore1.textContent = scoreValues[currentIndex][0];
+	randomScore2.textContent = scoreValues[currentIndex][1];
+	randomScore3.textContent = scoreValues[currentIndex][2];
+
+	currentIndex = (currentIndex + 1) % scoreValues.length;
+}
 
 function runAnimation() {
 	let currentIndex = 1;
-  
+
 	function changeAnimation() {
-	  if (currentIndex === 1) {
-		randomScore1.classList.add('animated-element');
-		randomScore3.classList.remove('animated-element');
-		currentIndex = 2;
-	  } else if (currentIndex === 2) {
-		randomScore1.classList.remove('animated-element');
-		randomScore2.classList.add('animated-element');
-		currentIndex = 3;
-	  } else if (currentIndex === 3) {
-		randomScore2.classList.remove('animated-element');
-		randomScore3.classList.add('animated-element');
-		currentIndex = 1;
-	  }
+		if (currentIndex === 1) {
+			randomScore1.classList.add('animated-element');
+			randomScore3.classList.remove('animated-element');
+			currentIndex = 2;
+		} else if (currentIndex === 2) {
+			randomScore1.classList.remove('animated-element');
+			randomScore2.classList.add('animated-element');
+			currentIndex = 3;
+		} else if (currentIndex === 3) {
+			randomScore2.classList.remove('animated-element');
+			randomScore3.classList.add('animated-element');
+			currentIndex = 1;
+		}
 	}
-  
+
 	function updateRandomBlockExecution() {
-	  document.getElementById('random-block-execution').innerHTML = getRandomBlockExecusion();
+		document.getElementById('random-block-execution').innerHTML = getRandomBlockExecusion();
 	}
-  
+
 	setTimeout(changeAnimation, 2000);
 	setInterval(changeAnimation, 2000);
 	setInterval(updateRandomBlockExecution, 6000);
-  }
-  
-  randomScore1.classList.add('animated-element');
-  runAnimation();
+	changeScores();
+	setInterval(changeScores, 6000);
+}
+
+randomScore1.classList.add('animated-element');
+runAnimation();
 
 
 let errorInputEmail = document.getElementById('message-error-email');
