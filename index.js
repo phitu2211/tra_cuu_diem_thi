@@ -14,9 +14,9 @@ app.use(
 		secret: process.env.SESSION_SECRET || '',
 		saveUninitialized: false,
 		resave: false,
-		// cookie: {
-		// 	maxAge: 1000 * 60 * 100,
-		// },
+		cookie: {
+			maxAge: 1000 * 60 * 100,
+		},
 	})
 );
 
@@ -80,12 +80,12 @@ app.post('/step3', async (req, res) => {
 		return res.sendFile(path.join(__dirname, '/pages/step2.html'));
 	}
 
-	// await getResponse.updateContact(contactId, {
-	// 	score,
-	// 	group,
-	// 	branchName,
-	// 	email,
-	// });
+	await getResponse.updateContact(contactId, {
+		score,
+		group,
+		branchName,
+		email,
+	});
 
 	getResponse
 		.createNewsLetter({

@@ -21,7 +21,14 @@ async function createContact(data) {
 		},
 		email: data.email,
 		name: data.name,
+		customFieldValues: [
+			{
+				customFieldId: 'pUbkon',
+				value: [data.phone.replace(/^0/, '+84')],
+			},
+		],
 	};
+	console.log(body);
 
 	const res = await fetch(CONTACT_ENDPOINT, {
 		method: 'POST',
@@ -29,7 +36,10 @@ async function createContact(data) {
 		body: JSON.stringify(body),
 	});
 
-	if (res.status != 202) return null;
+	if (res.status != 202) {
+		console.log(await res.json());
+		return null;
+	}
 }
 
 async function getContactIdByEmail(email) {
@@ -71,11 +81,11 @@ async function updateContact(id, data) {
 		});
 
 	const body = {
-		email: data.email,
+		// email: data.email,
 		customFieldValues,
 	};
 
-	const res = await fetch(`${CONTACT_ENDPOINT}/${id}`, {
+	const res = await fetch(`${CONTACT_ENDPOINT}/${id}/custom-fields`, {
 		method: 'POST',
 		headers: customHeaders,
 		body: JSON.stringify(body),
