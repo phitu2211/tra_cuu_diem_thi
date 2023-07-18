@@ -38,7 +38,7 @@ function getTemplate(data) {
 	return template;
 }
 
-function getTableHtml(score, group, branchName, limit = 5) {
+function getTableHtml(score, group, branchName, limit) {
 	const raw = fs.readFileSync('./universities.json');
 	const universities = JSON.parse(raw);
 
