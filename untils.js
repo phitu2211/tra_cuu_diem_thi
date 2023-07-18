@@ -74,8 +74,9 @@ function getTableHtml(score, group, branchName, limit = 5) {
 
 			if (group)
 				check =
-					check &&
-					branch.groups.map((group) => group[0]).includes(group.toUpperCase());
+					check && group.length > 1
+						? branch.groups.includes(group.toUpperCase())
+						: branch.groups.map((g) => g[0]).includes(group.toUpperCase());
 
 			if (branchName)
 				check =
